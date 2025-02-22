@@ -60,7 +60,7 @@ export default function GamePage() {
         
         <div className="max-w-6xl mx-auto">
           <GameStatus />
-          <GameBoard />
+          {shows.length > 0 && <GameBoard shows={shows} />}
         </div>
       </div>
     </Layout>

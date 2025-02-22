@@ -1,176 +1,164 @@
 'use client';
 
-import { DndContext, DragEndEvent, DragStartEvent, DragOverlay } from '@dnd-kit/core';
 import { useState, useEffect } from 'react';
-import { useGameStore } from '@/store/gameStore';
 import { ShowCard } from './ShowCard';
-import { shuffleArray } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { ArrowDownIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-export function GameBoard() {
-  const {
-    shows,
-    userMatches,
-    setMatch,
-    removeMatch,
-    score,
-    setScore,
-    timeElapsed,
-    updateTimeElapsed,
-    isGameComplete,
-    completeGame,
-  } = useGameStore();
+interface Show {
+  id: string;
+  title: string;
+  description: string;
+}
 
-  const [draggedItem, setDraggedItem] = useState<{
-    id: string;
-    title: string;
-    type: 'show' | 'description';
-  } | null>(null);
+interface Match {
+  showId: string;
+  descriptionId: string;
+  isMatched: boolean;
+  isCorrect: boolean;
+  showShakeAnimation?: boolean;
+}
 
-  const [shuffledDescriptions, setShuffledDescriptions] = useState<typeof shows>([]);
+interface GameBoardProps {
+  shows: Show[];
+}
+
+export function GameBoard({ shows }: GameBoardProps) {
+  const [userMatches, setUserMatches] = useState<Match[]>([]);
   const [selectedShowId, setSelectedShowId] = useState<string | null>(null);
-  const [incorrectPairIds, setIncorrectPairIds] = useState<Set<string>>(new Set());
+  const [selectedDescriptionId, setSelectedDescriptionId] = useState<string | null>(null);
+  const [shuffledDescriptions, setShuffledDescriptions] = useState<Array<{ id: string; description: string }>>([]);
 
-  // Timer effect
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isGameComplete) {
-        updateTimeElapsed(timeElapsed + 1);
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeElapsed, isGameComplete, updateTimeElapsed]);
-
-  // Initialize shuffled descriptions
-  useEffect(() => {
+    // Initialize and shuffle descriptions when shows change
     if (shows.length > 0) {
-      setShuffledDescriptions(shuffleArray(shows));
+      const descriptions = shows.map(show => ({ 
+        id: show.id, 
+        description: show.description 
+      }));
+      setShuffledDescriptions([...descriptions].sort(() => Math.random() - 0.5));
     }
   }, [shows]);
 
-  const handleDragStart = (event: DragStartEvent) => {
-    const { id, type } = event.active.data.current as { id: string; type: 'show' | 'description' };
-    const item = type === 'show' 
-      ? shows.find(s => s.id === id)
-      : shuffledDescriptions.find(s => s.id === id);
-    
-    if (item) {
-      setDraggedItem({
-        id: item.id,
-        title: type === 'show' ? item.title : item.description,
-        type,
-      });
+  const handleShowSelect = (showId: string) => {
+    setSelectedShowId(showId === selectedShowId ? null : showId);
+    if (selectedDescriptionId) {
+      handleMatch(showId, selectedDescriptionId);
+      setSelectedDescriptionId(null);
     }
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setDraggedItem(null);
-
-    if (!over) return;
-
-    const sourceId = (active.data.current as { id: string }).id;
-    const targetId = over.id as string;
-
-    handleMatch(sourceId, targetId);
-  };
-
-  const handleCardClick = (id: string, type: 'show' | 'description') => {
-    if (type === 'show') {
-      setSelectedShowId(id === selectedShowId ? null : id);
-    } else if (selectedShowId) {
-      handleMatch(selectedShowId, id);
+  const handleDescriptionSelect = (descriptionId: string) => {
+    setSelectedDescriptionId(descriptionId === selectedDescriptionId ? null : descriptionId);
+    if (selectedShowId) {
+      handleMatch(selectedShowId, descriptionId);
       setSelectedShowId(null);
     }
   };
 
   const handleMatch = (showId: string, descriptionId: string) => {
-    const isCorrectMatch = shows.some(show => 
-      (show.id === showId && `desc-${show.id}` === descriptionId) ||
-      (show.id === descriptionId && `desc-${show.id}` === showId)
-    );
-
-    if (isCorrectMatch) {
-      const matchScore = Math.max(1000 - timeElapsed * 10, 100); // Time-based scoring
-      setScore(score + matchScore);
-      setMatch(showId, descriptionId);
-
-      // Check if game is complete
-      if (Object.keys(userMatches).length === shows.length - 1) {
-        completeGame();
-      }
+    const isCorrect = showId === descriptionId;
+    
+    if (isCorrect) {
+      setUserMatches(prev => [
+        ...prev,
+        {
+          showId,
+          descriptionId,
+          isMatched: true,
+          isCorrect: true
+        }
+      ]);
     } else {
-      // Show shake animation for incorrect match
-      setIncorrectPairIds(new Set([showId, descriptionId]));
+      setUserMatches(prev => [
+        ...prev,
+        {
+          showId,
+          descriptionId,
+          isMatched: true,
+          isCorrect: false,
+          showShakeAnimation: true
+        }
+      ]);
+      
+      // Remove incorrect match after animation
       setTimeout(() => {
-        setIncorrectPairIds(new Set());
-      }, 500);
-      removeMatch(showId);
+        setUserMatches(prev => prev.filter(match => match.showId !== showId));
+      }, 1000);
     }
   };
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <div className="space-y-8">
-        {/* Shows Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {shows.map((show) => {
-            const isMatched = show.id in userMatches;
-            const matchedWithId = userMatches[show.id];
-            const isCorrect = matchedWithId === `desc-${show.id}`;
+    <div className="w-full flex flex-col space-y-4 md:space-y-12">
+      {/* Instructions */}
+      <div className="text-center space-y-1 md:space-y-2">
+        <h1 className="text-sm md:text-xl font-semibold text-white">Match the Netflix Shows!</h1>
+        <p className="text-[10px] md:text-sm text-gray-400">
+          Drag or click to match each Netflix show with its genre tags. Match all pairs to win!
+        </p>
+      </div>
 
+      {/* Shows Section */}
+      <div className="space-y-2 md:space-y-4">
+        <h2 className="text-xs md:text-lg font-medium text-gray-300">
+          <span className="inline-block w-5 h-5 md:w-6 md:h-6 text-[10px] md:text-sm bg-purple-500/20 rounded-full mr-2 flex items-center justify-center">1</span>
+          Netflix Shows
+        </h2>
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
+          {shows.map((show) => {
+            const match = userMatches.find(m => m.showId === show.id);
             return (
               <ShowCard
                 key={show.id}
                 id={show.id}
                 title={show.title}
                 type="show"
-                isMatched={isMatched}
-                isCorrect={isCorrect}
+                isMatched={match?.isMatched}
+                isCorrect={match?.isCorrect}
                 isSelected={selectedShowId === show.id}
-                onSelect={() => handleCardClick(show.id, 'show')}
-                showShakeAnimation={incorrectPairIds.has(show.id)}
-              />
-            );
-          })}
-        </div>
-
-        {/* Descriptions Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {shuffledDescriptions.map((show) => {
-            const dropZoneId = `desc-${show.id}`;
-            const matchedShowId = Object.entries(userMatches).find(
-              ([_, descId]) => descId === dropZoneId
-            )?.[0];
-            const isMatched = Boolean(matchedShowId);
-            const isCorrect = matchedShowId === show.id;
-
-            return (
-              <ShowCard
-                key={dropZoneId}
-                id={show.id}
-                title={show.description}
-                type="description"
-                isMatched={isMatched}
-                isCorrect={isCorrect}
-                onSelect={() => handleCardClick(show.id, 'description')}
-                showShakeAnimation={incorrectPairIds.has(show.id)}
+                onSelect={() => handleShowSelect(show.id)}
+                showShakeAnimation={match?.showShakeAnimation}
               />
             );
           })}
         </div>
       </div>
 
-      <DragOverlay>
-        {draggedItem && (
-          <ShowCard
-            id={draggedItem.id}
-            title={draggedItem.title}
-            type={draggedItem.type}
-          />
-        )}
-      </DragOverlay>
-    </DndContext>
+      {/* Visual Separator */}
+      <div className="flex flex-col items-center space-y-1 md:space-y-2">
+        <div className="w-1/2 border-t border-gray-700" />
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.5 }}
+        >
+          <ArrowDownIcon className="w-4 h-4 md:w-6 md:h-6 text-gray-500" />
+        </motion.div>
+      </div>
+
+      {/* Descriptions Section */}
+      <div className="space-y-2 md:space-y-4">
+        <h2 className="text-xs md:text-lg font-medium text-gray-300">
+          <span className="inline-block w-5 h-5 md:w-6 md:h-6 text-[10px] md:text-sm bg-gray-500/20 rounded-full mr-2 flex items-center justify-center">2</span>
+          Genre Tags
+        </h2>
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
+          {shuffledDescriptions.map((desc) => {
+            const match = userMatches.find(m => m.descriptionId === desc.id);
+            return (
+              <ShowCard
+                key={desc.id}
+                id={desc.id}
+                title={desc.description}
+                type="description"
+                isMatched={match?.isMatched}
+                isCorrect={match?.isCorrect}
+                isSelected={selectedDescriptionId === desc.id}
+                onSelect={() => handleDescriptionSelect(desc.id)}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 } 
