@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { formatScore } from '@/lib/utils';
 
@@ -8,21 +10,59 @@ interface LeaderboardEntry {
   timestamp: string;
 }
 
+// Mock data until API is ready
+const MOCK_LEADERBOARD: LeaderboardEntry[] = [
+  {
+    id: '1',
+    username: 'NetflixPro',
+    score: 5800,
+    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString() // 5 minutes ago
+  },
+  {
+    id: '2',
+    username: 'BingeWatcher',
+    score: 5200,
+    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString() // 15 minutes ago
+  },
+  {
+    id: '3',
+    username: 'SeriesExpert',
+    score: 4900,
+    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString() // 30 minutes ago
+  },
+  {
+    id: '4',
+    username: 'ShowMaster',
+    score: 4500,
+    timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString() // 45 minutes ago
+  },
+  {
+    id: '5',
+    username: 'StreamingKing',
+    score: 4200,
+    timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString() // 1 hour ago
+  }
+];
+
 export function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch(`/api/leaderboard?page=${page}&limit=10`);
-      if (!response.ok) throw new Error('Failed to fetch leaderboard');
+      setIsLoading(true);
+      // TODO: Replace with actual API call when ready
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const data = await response.json();
-      setLeaderboard(prev => page === 1 ? data.entries : [...prev, ...data.entries]);
-      setHasMore(data.hasMore);
+      if (page === 1) {
+        setLeaderboard(MOCK_LEADERBOARD);
+        setHasMore(false); // No more mock data
+      }
+      
       setError(null);
     } catch (err) {
       setError('Failed to load leaderboard data');
@@ -41,8 +81,14 @@ export function Leaderboard() {
 
   if (error) {
     return (
-      <div className="text-center text-red-500 p-4">
-        {error}
+      <div className="text-center text-red-500 p-4 bg-red-100/10 rounded-lg">
+        <p>{error}</p>
+        <button 
+          onClick={fetchLeaderboard}
+          className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
@@ -92,6 +138,12 @@ export function Leaderboard() {
               >
                 {isLoading ? 'Loading...' : 'Load More'}
               </button>
+            </div>
+          )}
+
+          {leaderboard.length === 0 && !isLoading && (
+            <div className="text-center text-gray-400 py-8">
+              No scores recorded yet. Be the first to play!
             </div>
           )}
         </>
