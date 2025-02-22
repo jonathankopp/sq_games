@@ -7,13 +7,25 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     template: "%s | SqGames",
-    default: "SqGames - Match Your Favorite Shows",
+    default: "SqGames - Unique Browser Games",
   },
-  description: "Test your TV knowledge by matching shows with their descriptions. Compete for high scores in this fun matching game!",
+  description: "Experience unique and engaging browser-based games crafted with care. Each game offers a fresh take on classic concepts.",
+  keywords: "browser games, online games, unique games, multiplayer games, casual games",
   icons: {
     icon: "/logo.svg",
     shortcut: "/logo.svg",
     apple: "/logo.svg",
+  },
+  openGraph: {
+    type: "website",
+    title: "SqGames - Unique Browser Games",
+    description: "Experience unique and engaging browser-based games crafted with care.",
+    siteName: "SqGames",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SqGames - Unique Browser Games",
+    description: "Experience unique and engaging browser-based games crafted with care.",
   },
 };
 
