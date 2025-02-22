@@ -22,7 +22,9 @@ export function GameBoard({ shows }: GameBoardProps) {
     score, 
     setScore,
     timeElapsed,
-    completeGame
+    updateTimeElapsed,
+    completeGame,
+    isGameComplete
   } = useGameStore();
 
   const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
@@ -30,6 +32,21 @@ export function GameBoard({ shows }: GameBoardProps) {
   const [selectedDescriptionId, setSelectedDescriptionId] = useState<string | null>(null);
   const [incorrectShowId, setIncorrectShowId] = useState<string | null>(null);
   const [shuffledDescriptions, setShuffledDescriptions] = useState<Array<{ id: string; description: string }>>([]);
+
+  // Timer effect
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (!isGameComplete) {
+      timer = setInterval(() => {
+        updateTimeElapsed(timeElapsed + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [timeElapsed, isGameComplete, updateTimeElapsed]);
 
   useEffect(() => {
     // Initialize and shuffle descriptions when shows change
@@ -91,6 +108,10 @@ export function GameBoard({ shows }: GameBoardProps) {
     } else {
       // Show incorrect animation only for the show card
       setIncorrectShowId(showId);
+      
+      // Apply score penalty (20% of current score or minimum of 100 points)
+      const penalty = Math.max(Math.floor(score * 0.2), 100);
+      setScore(Math.max(0, score - penalty));
       
       // Clear after animation
       setTimeout(() => {
