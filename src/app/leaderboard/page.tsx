@@ -1,3 +1,5 @@
+'use client';
+
 import { Layout } from '../components/layout/Layout';
 import { Leaderboard } from '../components/game/Leaderboard';
 

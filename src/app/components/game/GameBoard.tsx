@@ -125,9 +125,9 @@ export function GameBoard({ shows }: GameBoardProps) {
     <div className="w-full flex flex-col space-y-4 md:space-y-12">
       {/* Instructions */}
       <div className="text-center space-y-1 md:space-y-2">
-        <h1 className="text-sm md:text-xl font-semibold text-white">Match the Netflix Shows!</h1>
+        <h1 className="text-sm md:text-xl font-semibold text-white">Match the Shows!</h1>
         <p className="text-[10px] md:text-sm text-gray-400">
-          Click to match each Netflix show with its genre tags. Match all pairs to win!
+          Click to match each show with its genre tags. Match all pairs to win!
         </p>
       </div>
 
@@ -135,7 +135,7 @@ export function GameBoard({ shows }: GameBoardProps) {
       <div className="space-y-2 md:space-y-4">
         <h2 className="text-xs md:text-lg font-medium text-gray-300">
           <span className="inline-block w-5 h-5 md:w-6 md:h-6 text-[10px] md:text-sm bg-purple-500/20 rounded-full mr-2 flex items-center justify-center">1</span>
-          Netflix Shows
+          TV Shows
         </h2>
         <div className="grid grid-cols-2 gap-2 md:gap-4">
           {shows.map((show) => (

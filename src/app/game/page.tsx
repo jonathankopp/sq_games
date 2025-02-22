@@ -10,33 +10,33 @@ import { useGameStore } from '@/store/gameStore';
 const SAMPLE_SHOWS = [
   {
     id: '1',
-    title: 'Stranger Things',
-    description: 'Supernatural • Teen • Horror'
+    title: 'Breaking Bad',
+    description: 'Crime • Drama • Thriller'
   },
   {
     id: '2',
-    title: 'The Crown',
-    description: 'Historical • Drama • Political'
+    title: 'The Office',
+    description: 'Comedy • Mockumentary • Workplace'
   },
   {
     id: '3',
-    title: 'Bridgerton',
-    description: 'Romance • Period • Scandalous'
+    title: 'Game of Thrones',
+    description: 'Fantasy • Drama • Epic'
   },
   {
     id: '4',
-    title: 'Squid Game',
-    description: 'Thriller • Survival • Dark'
+    title: 'Friends',
+    description: 'Sitcom • Comedy • Relationships'
   },
   {
     id: '5',
-    title: 'Wednesday',
-    description: 'Gothic • Teen • Mystery'
+    title: 'The Wire',
+    description: 'Crime • Drama • Social'
   },
   {
     id: '6',
-    title: 'Black Mirror',
-    description: 'Dystopian • Tech • Twisted'
+    title: 'Lost',
+    description: 'Mystery • Adventure • Supernatural'
   }
 ];
 
@@ -55,7 +55,7 @@ export default function GamePage() {
     <Layout>
       <div className="py-8">
         <h1 className="text-3xl font-bold text-white text-center mb-8">
-          Match Netflix Shows
+          Match the Shows
         </h1>
         
         <div className="max-w-6xl mx-auto">

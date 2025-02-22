@@ -23,7 +23,7 @@ export function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-xl font-bold">
-              Netflix Match
+              SqGames
             </Link>
           </div>
 

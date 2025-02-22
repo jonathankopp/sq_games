@@ -9,10 +9,10 @@ export default function HomePage() {
         <div className="relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Match Netflix Shows
+              Match Your Favorite Shows
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Test your Netflix knowledge! Match shows with their descriptions and compete for the highest score.
+              Test your TV knowledge! Match shows with their descriptions and compete for the highest score.
             </p>
             <Link
               href="/game"
@@ -39,7 +39,7 @@ export default function HomePage() {
                 <div className="text-4xl mb-4">1️⃣</div>
                 <h3 className="text-xl font-semibold text-white mb-2">Match Shows</h3>
                 <p className="text-gray-300">
-                  Drag and drop Netflix shows to match them with their correct descriptions.
+                  Match TV shows with their correct genre descriptions and tags.
                 </p>
               </div>
             </div>
@@ -78,14 +78,6 @@ export default function HomePage() {
               </h3>
               <p className="text-gray-300">
                 New challenging game modes including timed matches, difficulty levels, and themed categories.
-              </p>
-            </div>
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Multiplayer Challenges
-              </h3>
-              <p className="text-gray-300">
-                Challenge your friends to head-to-head matches and compete in real-time tournaments.
               </p>
             </div>
           </div>

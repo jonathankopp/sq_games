@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="#1F2937"/>
+  
+  <!-- Connected squares representing matching -->
+  <rect x="120" y="140" width="120" height="120" rx="20" fill="#8B5CF6"/>
+  <rect x="272" y="140" width="120" height="120" rx="20" fill="#EC4899"/>
+  <rect x="120" y="252" width="120" height="120" rx="20" fill="#EC4899"/>
+  <rect x="272" y="252" width="120" height="120" rx="20" fill="#8B5CF6"/>
+  
+  <!-- Connecting lines -->
+  <path d="M240 200 L272 272" stroke="#F3F4F6" stroke-width="12"/>
+  <path d="M240 312 L272 200" stroke="#F3F4F6" stroke-width="12"/>
+  
+  <!-- SQ letters -->
+  <text x="256" y="460" text-anchor="middle" font-family="Arial Black" font-size="48" fill="#F3F4F6">SQ</text>
+</svg> 
