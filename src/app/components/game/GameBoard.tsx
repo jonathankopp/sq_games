@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { ShowCard } from './ShowCard';
 import { ArrowDownIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useGameStore } from '@/store/gameStore';
+import { calculateTimeBonus } from '@/lib/utils';
 
 interface Show {
   id: string;
@@ -11,22 +13,22 @@ interface Show {
   description: string;
 }
 
-interface Match {
-  showId: string;
-  descriptionId: string;
-  isMatched: boolean;
-  isCorrect: boolean;
-  showShakeAnimation?: boolean;
-}
-
 interface GameBoardProps {
   shows: Show[];
 }
 
 export function GameBoard({ shows }: GameBoardProps) {
-  const [userMatches, setUserMatches] = useState<Match[]>([]);
+  const { 
+    score, 
+    setScore,
+    timeElapsed,
+    completeGame
+  } = useGameStore();
+
+  const [correctMatches, setCorrectMatches] = useState<Set<string>>(new Set());
   const [selectedShowId, setSelectedShowId] = useState<string | null>(null);
   const [selectedDescriptionId, setSelectedDescriptionId] = useState<string | null>(null);
+  const [incorrectShowId, setIncorrectShowId] = useState<string | null>(null);
   const [shuffledDescriptions, setShuffledDescriptions] = useState<Array<{ id: string; description: string }>>([]);
 
   useEffect(() => {
@@ -40,19 +42,28 @@ export function GameBoard({ shows }: GameBoardProps) {
     }
   }, [shows]);
 
+  const clearSelections = () => {
+    setSelectedShowId(null);
+    setSelectedDescriptionId(null);
+  };
+
   const handleShowSelect = (showId: string) => {
+    if (correctMatches.has(showId)) return; // Ignore if already matched
+    if (incorrectShowId) return; // Ignore if showing incorrect animation
+    
     setSelectedShowId(showId === selectedShowId ? null : showId);
     if (selectedDescriptionId) {
       handleMatch(showId, selectedDescriptionId);
-      setSelectedDescriptionId(null);
     }
   };
 
   const handleDescriptionSelect = (descriptionId: string) => {
+    if (correctMatches.has(descriptionId)) return; // Ignore if already matched
+    if (incorrectShowId) return; // Ignore if showing incorrect animation
+    
     setSelectedDescriptionId(descriptionId === selectedDescriptionId ? null : descriptionId);
     if (selectedShowId) {
       handleMatch(selectedShowId, descriptionId);
-      setSelectedShowId(null);
     }
   };
 
@@ -60,30 +71,31 @@ export function GameBoard({ shows }: GameBoardProps) {
     const isCorrect = showId === descriptionId;
     
     if (isCorrect) {
-      setUserMatches(prev => [
-        ...prev,
-        {
-          showId,
-          descriptionId,
-          isMatched: true,
-          isCorrect: true
-        }
-      ]);
-    } else {
-      setUserMatches(prev => [
-        ...prev,
-        {
-          showId,
-          descriptionId,
-          isMatched: true,
-          isCorrect: false,
-          showShakeAnimation: true
-        }
-      ]);
+      // Add to correct matches
+      const newMatches = new Set(correctMatches);
+      newMatches.add(showId);
+      setCorrectMatches(newMatches);
       
-      // Remove incorrect match after animation
+      // Update score - base score + time bonus
+      const baseScore = 1000;
+      const timeBonus = calculateTimeBonus(timeElapsed);
+      setScore(score + baseScore + timeBonus);
+      
+      // Clear selections
+      clearSelections();
+      
+      // Check if game is complete
+      if (newMatches.size === shows.length) {
+        completeGame();
+      }
+    } else {
+      // Show incorrect animation only for the show card
+      setIncorrectShowId(showId);
+      
+      // Clear after animation
       setTimeout(() => {
-        setUserMatches(prev => prev.filter(match => match.showId !== showId));
+        setIncorrectShowId(null);
+        clearSelections();
       }, 1000);
     }
   };
@@ -94,7 +106,7 @@ export function GameBoard({ shows }: GameBoardProps) {
       <div className="text-center space-y-1 md:space-y-2">
         <h1 className="text-sm md:text-xl font-semibold text-white">Match the Netflix Shows!</h1>
         <p className="text-[10px] md:text-sm text-gray-400">
-          Drag or click to match each Netflix show with its genre tags. Match all pairs to win!
+          Click to match each Netflix show with its genre tags. Match all pairs to win!
         </p>
       </div>
 
@@ -105,22 +117,20 @@ export function GameBoard({ shows }: GameBoardProps) {
           Netflix Shows
         </h2>
         <div className="grid grid-cols-2 gap-2 md:gap-4">
-          {shows.map((show) => {
-            const match = userMatches.find(m => m.showId === show.id);
-            return (
-              <ShowCard
-                key={show.id}
-                id={show.id}
-                title={show.title}
-                type="show"
-                isMatched={match?.isMatched}
-                isCorrect={match?.isCorrect}
-                isSelected={selectedShowId === show.id}
-                onSelect={() => handleShowSelect(show.id)}
-                showShakeAnimation={match?.showShakeAnimation}
-              />
-            );
-          })}
+          {shows.map((show) => (
+            <ShowCard
+              key={show.id}
+              id={show.id}
+              title={show.title}
+              type="show"
+              isMatched={correctMatches.has(show.id)}
+              isCorrect={correctMatches.has(show.id)}
+              isSelected={selectedShowId === show.id}
+              showShakeAnimation={incorrectShowId === show.id}
+              onSelect={() => handleShowSelect(show.id)}
+              disabled={correctMatches.has(show.id)}
+            />
+          ))}
         </div>
       </div>
 
@@ -142,21 +152,19 @@ export function GameBoard({ shows }: GameBoardProps) {
           Genre Tags
         </h2>
         <div className="grid grid-cols-2 gap-2 md:gap-4">
-          {shuffledDescriptions.map((desc) => {
-            const match = userMatches.find(m => m.descriptionId === desc.id);
-            return (
-              <ShowCard
-                key={desc.id}
-                id={desc.id}
-                title={desc.description}
-                type="description"
-                isMatched={match?.isMatched}
-                isCorrect={match?.isCorrect}
-                isSelected={selectedDescriptionId === desc.id}
-                onSelect={() => handleDescriptionSelect(desc.id)}
-              />
-            );
-          })}
+          {shuffledDescriptions.map((desc) => (
+            <ShowCard
+              key={desc.id}
+              id={desc.id}
+              title={desc.description}
+              type="description"
+              isMatched={correctMatches.has(desc.id)}
+              isCorrect={correctMatches.has(desc.id)}
+              isSelected={selectedDescriptionId === desc.id}
+              onSelect={() => handleDescriptionSelect(desc.id)}
+              disabled={correctMatches.has(desc.id)}
+            />
+          ))}
         </div>
       </div>
     </div>
