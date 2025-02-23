@@ -18,7 +18,6 @@ interface ShowCardProps {
 }
 
 export function ShowCard({
-  id,
   title,
   type,
   isMatched,

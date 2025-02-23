@@ -25,7 +25,7 @@ export function LoginForm() {
     try {
       await login(username, password);
       router.push('/game'); // Redirect to game page after successful login
-    } catch (err) {
+    } catch {
       // Error is handled in the store
     } finally {
       setIsSubmitting(false);
@@ -92,7 +92,7 @@ export function LoginForm() {
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link 
             href="/register" 
             className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"

@@ -77,7 +77,7 @@ export default function HomePage() {
                 New Game Categories
               </h3>
               <p className="text-gray-300">
-                We're working on exciting new game categories that will test different skills and knowledge areas.
+                We&apos;re working on exciting new game categories that will test different skills and knowledge areas.
               </p>
             </div>
             <div className="bg-gray-800 rounded-lg p-6">

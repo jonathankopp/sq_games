@@ -1,0 +1,158 @@
+SqGames - Backend Requirements Document
+=======================================
+
+Project Overview
+---------------
+SqGames is a platform for unique browser-based games. We're building a collection of engaging games with our first release being a TV Show Matching Game. The platform requires a robust backend to handle user management, game state, and leaderboards.
+
+Current State
+------------
+- Frontend: Next.js 14 application with TypeScript and TailwindCSS
+- Current Game: TV Show Matching Game
+- Authentication: Mock implementation ready for real backend integration
+- Leaderboard: Currently using mock data
+- Game State: Managed client-side with Zustand
+
+Technical Stack Requirements
+--------------------------
+- FastAPI for backend API
+- MongoDB for data storage
+- Python 3.9+
+- JWT for authentication
+- CORS support for frontend integration
+
+API Requirements
+---------------
+
+1. Authentication Endpoints
+   - POST /api/auth/register
+     - Fields: username, password
+     - Returns: user object with JWT token
+   - POST /api/auth/login
+     - Fields: username, password
+     - Returns: user object with JWT token
+   - GET /api/auth/me
+     - Requires: JWT token
+     - Returns: current user details
+
+2. Game Data Endpoints
+   - GET /api/games/tv-match/shows
+     - Returns: List of TV shows with descriptions
+     - Should support pagination and randomization
+   - POST /api/games/tv-match/scores
+     - Fields: score, timeElapsed, matchesCount
+     - Requires: JWT token
+     - Records user's game results
+
+3. Leaderboard Endpoints
+   - GET /api/leaderboard/tv-match
+     - Query params: page, limit
+     - Returns: Paginated list of top scores
+   - GET /api/leaderboard/tv-match/user/{userId}
+     - Returns: User's best scores and rank
+
+Database Schema
+--------------
+
+1. Users Collection
+   {
+     _id: ObjectId,
+     username: string (unique),
+     password: string (hashed),
+     createdAt: timestamp,
+     lastLogin: timestamp
+   }
+
+2. Games Collection
+   {
+     _id: ObjectId,
+     name: string,
+     description: string,
+     isActive: boolean,
+     config: object
+   }
+
+3. TVShows Collection
+   {
+     _id: ObjectId,
+     title: string,
+     description: string,
+     genre: string[],
+     difficulty: number
+   }
+
+4. Scores Collection
+   {
+     _id: ObjectId,
+     userId: ObjectId,
+     gameId: ObjectId,
+     score: number,
+     timeElapsed: number,
+     matchesCount: number,
+     createdAt: timestamp
+   }
+
+Security Requirements
+-------------------
+1. Password hashing using bcrypt
+2. JWT token expiration and refresh mechanism
+3. Rate limiting for API endpoints
+4. Input validation and sanitization
+5. CORS configuration for frontend domain
+
+Performance Requirements
+----------------------
+1. API response time < 100ms
+2. Support for 1000+ concurrent users
+3. Efficient caching for leaderboard data
+4. Database indexing for frequent queries
+
+Phase 1 Deliverables
+-------------------
+1. Authentication system implementation
+2. TV Show data management API
+3. Score recording and leaderboard system
+4. Basic monitoring and logging
+5. API documentation using OpenAPI/Swagger
+
+Future Considerations
+-------------------
+1. Support for multiple game types
+2. Real-time multiplayer capabilities
+3. User profiles and achievements
+4. Social features (friends, challenges)
+5. Analytics and reporting
+
+Testing Requirements
+------------------
+1. Unit tests for all API endpoints
+2. Integration tests for database operations
+3. Load testing for concurrent users
+4. Security testing for authentication
+
+Monitoring Requirements
+---------------------
+1. API endpoint response times
+2. Database query performance
+3. Error rates and types
+4. User authentication success/failure rates
+
+Documentation Requirements
+------------------------
+1. API documentation with examples
+2. Database schema documentation
+3. Setup and deployment guides
+4. Testing documentation
+
+Timeline
+--------
+Phase 1 implementation should be completed within 4 weeks:
+- Week 1: Database setup and authentication
+- Week 2: Game data and scoring endpoints
+- Week 3: Leaderboard implementation
+- Week 4: Testing and documentation
+
+Contact Information
+------------------
+For technical questions or clarification, please contact:
+[Insert Technical Lead Contact Information] 

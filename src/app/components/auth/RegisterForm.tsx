@@ -37,7 +37,7 @@ export function RegisterForm() {
     try {
       await register(username, password);
       router.push('/game'); // Redirect to game page after successful registration
-    } catch (err) {
+    } catch {
       // Error is handled in the store
     } finally {
       setIsSubmitting(false);

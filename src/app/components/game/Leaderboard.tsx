@@ -64,7 +64,7 @@ export function Leaderboard() {
       }
       
       setError(null);
-    } catch (err) {
+    } catch {
       setError('Failed to load leaderboard data');
     } finally {
       setIsLoading(false);
@@ -73,7 +73,7 @@ export function Leaderboard() {
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [page]);
+  }, [page, fetchLeaderboard]);
 
   const loadMore = () => {
     setPage(prev => prev + 1);
