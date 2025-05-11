@@ -11,6 +11,7 @@ interface GameState {
   userMatches: Record<string, string>; // showId -> descriptionId
   score: number;
   timeElapsed: number;
+  incorrectMatches: number;
   isGameStarted: boolean;
   isGameComplete: boolean;
   
@@ -19,6 +20,7 @@ interface GameState {
   setMatch: (showId: string, descriptionId: string) => void;
   removeMatch: (showId: string) => void;
   setScore: (score: number) => void;
+  incrementIncorrectMatches: () => void;
   updateTimeElapsed: (time: number) => void;
   startGame: () => void;
   completeGame: () => void;
@@ -30,6 +32,7 @@ export const useGameStore = create<GameState>((set) => ({
   userMatches: {},
   score: 0,
   timeElapsed: 0,
+  incorrectMatches: 0,
   isGameStarted: false,
   isGameComplete: false,
 
@@ -49,9 +52,17 @@ export const useGameStore = create<GameState>((set) => ({
   
   setScore: (score) => set({ score }),
   
+  incrementIncorrectMatches: () => 
+    set((state) => ({ incorrectMatches: state.incorrectMatches + 1 })),
+  
   updateTimeElapsed: (time) => set({ timeElapsed: time }),
   
-  startGame: () => set({ isGameStarted: true, timeElapsed: 0, score: 0 }),
+  startGame: () => set({ 
+    isGameStarted: true, 
+    timeElapsed: 0, 
+    score: 0,
+    incorrectMatches: 0 
+  }),
   
   completeGame: () => set({ isGameComplete: true }),
   
@@ -59,6 +70,7 @@ export const useGameStore = create<GameState>((set) => ({
     userMatches: {},
     score: 0,
     timeElapsed: 0,
+    incorrectMatches: 0,
     isGameStarted: false,
     isGameComplete: false
   })

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { formatScore } from '@/lib/utils';
 
 interface LeaderboardEntry {
@@ -51,7 +51,7 @@ export function Leaderboard() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     try {
       setIsLoading(true);
       // TODO: Replace with actual API call when ready
@@ -69,11 +69,11 @@ export function Leaderboard() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchLeaderboard();
-  }, [page, fetchLeaderboard]);
+  }, [fetchLeaderboard]);
 
   const loadMore = () => {
     setPage(prev => prev + 1);

@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { ShowCard } from './ShowCard';
-import { ArrowDownIcon } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useGameStore } from '@/store/gameStore';
 import { calculateTimeBonus } from '@/lib/utils';
 
@@ -23,6 +21,7 @@ export function GameBoard({ shows }: GameBoardProps) {
     setScore,
     timeElapsed,
     updateTimeElapsed,
+    incrementIncorrectMatches,
     completeGame,
     isGameComplete
   } = useGameStore();
@@ -113,6 +112,9 @@ export function GameBoard({ shows }: GameBoardProps) {
       const penalty = Math.max(Math.floor(score * 0.2), 100);
       setScore(Math.max(0, score - penalty));
       
+      // Increment incorrect matches count
+      incrementIncorrectMatches();
+      
       // Clear after animation
       setTimeout(() => {
         setIncorrectShowId(null);
@@ -122,22 +124,13 @@ export function GameBoard({ shows }: GameBoardProps) {
   };
 
   return (
-    <div className="w-full flex flex-col space-y-4 md:space-y-12">
-      {/* Instructions */}
-      <div className="text-center space-y-1 md:space-y-2">
-        <h1 className="text-sm md:text-xl font-semibold text-white">Match the Shows!</h1>
-        <p className="text-[10px] md:text-sm text-gray-400">
-          Click to match each show with its genre tags. Match all pairs to win!
-        </p>
-      </div>
-
-      {/* Shows Section */}
-      <div className="space-y-2 md:space-y-4">
-        <h2 className="text-xs md:text-lg font-medium text-gray-300">
-          <span className="inline-block w-5 h-5 md:w-6 md:h-6 text-[10px] md:text-sm bg-purple-500/20 rounded-full mr-2 flex items-center justify-center">1</span>
-          TV Shows
+    <div className="w-full flex flex-col space-y-8">
+      {/* TV Shows Section */}
+      <div className="space-y-4">
+        <h2 className="text-lg md:text-xl font-bold text-center text-black">
+          TV SHOWS & MOVIES
         </h2>
-        <div className="grid grid-cols-2 gap-2 md:gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {shows.map((show) => (
             <ShowCard
               key={show.id}
@@ -155,24 +148,12 @@ export function GameBoard({ shows }: GameBoardProps) {
         </div>
       </div>
 
-      {/* Visual Separator */}
-      <div className="flex flex-col items-center space-y-1 md:space-y-2">
-        <div className="w-1/2 border-t border-gray-700" />
-        <motion.div
-          animate={{ y: [0, 5, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-        >
-          <ArrowDownIcon className="w-4 h-4 md:w-6 md:h-6 text-gray-500" />
-        </motion.div>
-      </div>
-
-      {/* Descriptions Section */}
-      <div className="space-y-2 md:space-y-4">
-        <h2 className="text-xs md:text-lg font-medium text-gray-300">
-          <span className="inline-block w-5 h-5 md:w-6 md:h-6 text-[10px] md:text-sm bg-gray-500/20 rounded-full mr-2 flex items-center justify-center">2</span>
-          Genre Tags
+      {/* Genres Section */}
+      <div className="space-y-4">
+        <h2 className="text-lg md:text-xl font-bold text-center text-black">
+          GENRES
         </h2>
-        <div className="grid grid-cols-2 gap-2 md:gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {shuffledDescriptions.map((desc) => (
             <ShowCard
               key={desc.id}

@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Layout } from '../components/layout/Layout';
 import { GameBoard } from '../components/game/GameBoard';
 import { GameStatus } from '../components/game/GameStatus';
 import { useGameStore } from '@/store/gameStore';
@@ -56,34 +55,28 @@ export default function GamePage() {
   }, [setShows, startGame, isGameStarted]);
 
   return (
-    <Layout>
-      <div className="py-8">
-        <h1 className="text-3xl font-bold text-white text-center mb-8">
-          Match the Shows
-        </h1>
-        
-        <div className="max-w-6xl mx-auto">
-          <GameStatus />
-          
-          {isLoading ? (
-            <div className="flex justify-center items-center min-h-[400px]">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-            </div>
-          ) : error ? (
-            <div className="text-center text-red-500 p-4 bg-red-100/10 rounded-lg">
-              <p>{error}</p>
-              <button 
-                onClick={() => window.location.reload()}
-                className="mt-4 px-6 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-              >
-                Try Again
-              </button>
-            </div>
-          ) : shows.length > 0 ? (
-            <GameBoard shows={shows} />
-          ) : null}
-        </div>
+    <div className="min-h-screen flex flex-col bg-white">
+      <GameStatus />
+      
+      <div className="max-w-6xl mx-auto px-4 w-full flex-grow py-8">
+        {isLoading ? (
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black"></div>
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500 p-4 bg-red-100 rounded-lg">
+            <p>{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-4 px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : shows.length > 0 ? (
+          <GameBoard shows={shows} />
+        ) : null}
       </div>
-    </Layout>
+    </div>
   );
 } 

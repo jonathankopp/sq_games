@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { CountdownTimer } from './components/CountdownTimer';
 
 export default function HomePage() {
@@ -96,7 +95,7 @@ export default function HomePage() {
             <div className="flex-1">
               <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">REVERSE<br />CROSSWORD</h2>
               <p className="text-xs md:text-base text-black mb-3 md:mb-6">
-                The answers are already in place, so it's up to you to come up with the clues
+                The answers are already in place, so it&apos;s up to you to come up with the clues
               </p>
               <div className="mt-2 md:mt-4">
                 <button
