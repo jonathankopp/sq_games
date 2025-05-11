@@ -136,7 +136,6 @@ export function GameBoard({ shows }: GameBoardProps) {
               key={show.id}
               id={show.id}
               title={show.title}
-              type="show"
               isMatched={correctMatches.has(show.id)}
               isCorrect={correctMatches.has(show.id)}
               isSelected={selectedShowId === show.id}
@@ -159,7 +158,6 @@ export function GameBoard({ shows }: GameBoardProps) {
               key={desc.id}
               id={desc.id}
               title={desc.description}
-              type="description"
               isMatched={correctMatches.has(desc.id)}
               isCorrect={correctMatches.has(desc.id)}
               isSelected={selectedDescriptionId === desc.id}

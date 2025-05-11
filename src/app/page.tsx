@@ -107,7 +107,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="ml-2 md:ml-4">
-              <img src="/crossword.png" alt="Crossword" className="h-12 w-12 md:h-20 md:w-20 object-contain" />
+              <img src="/crossword.png" alt="Crossword" className="h-16 w-16 md:h-20 md:w-20 object-contain" />
             </div>
           </div>
         </div>

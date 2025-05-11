@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 interface ShowCardProps {
   id: string;
   title: string;
-  type: 'show' | 'description';
   isMatched?: boolean;
   isCorrect?: boolean;
   isSelected?: boolean;
@@ -18,7 +17,6 @@ interface ShowCardProps {
 
 export function ShowCard({
   title,
-  type,
   isMatched,
   isCorrect,
   isSelected,
