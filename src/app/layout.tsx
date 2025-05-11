@@ -6,25 +6,25 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | SqGames",
-    default: "SqGames - Unique Browser Games",
+    template: "%s | SQ",
+    default: "SQ Games",
   },
   description: "Experience unique and engaging browser-based games crafted with care. Each game offers a fresh take on classic concepts.",
   keywords: "browser games, online games, unique games, multiplayer games, casual games",
   icons: {
-    icon: "/logo.svg",
-    shortcut: "/logo.svg",
-    apple: "/logo.svg",
+    icon: "/cat-martini.png",
+    shortcut: "/cat-martini.png",
+    apple: "/cat-martini.png",
   },
   openGraph: {
     type: "website",
-    title: "SqGames - Unique Browser Games",
+    title: "SQ Games",
     description: "Experience unique and engaging browser-based games crafted with care.",
-    siteName: "SqGames",
+    siteName: "SQ",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SqGames - Unique Browser Games",
+    title: "SQ Games",
     description: "Experience unique and engaging browser-based games crafted with care.",
   },
 };
@@ -36,6 +36,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );

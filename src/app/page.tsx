@@ -1,96 +1,118 @@
 import Link from 'next/link';
-import { Layout } from './components/layout/Layout';
+import Image from 'next/image';
+import { CountdownTimer } from './components/CountdownTimer';
 
 export default function HomePage() {
   return (
-    <Layout>
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="relative z-10">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              SqGames
-            </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Experience unique and engaging games crafted with care. Each game offers a fresh take on classic concepts.
-            </p>
-            <Link
-              href="/game"
-              className="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-purple-700 transition-colors"
-            >
-              Play Now
-            </Link>
+    <div className="min-h-screen flex flex-col bg-white text-black">
+      {/* Header Bar with Countdown and Logo */}
+      <header className="bg-blue-100 py-2 md:py-4 px-3 md:px-6 flex items-center justify-between">
+        <div className="flex items-center">
+          <div className="font-bold text-sm md:text-2xl mr-2 md:mr-4 text-black">
+            Games Refresh in:
+          </div>
+          <CountdownTimer targetHour={0} targetMinute={0} targetTimezone="America/New_York" />
+        </div>         
+
+        {/* Right side with cat and profile */}
+        <div className="flex items-center">
+          <div className="relative">
+            <img src="/cat-martini.png" alt="Cat with martini" className="h-12 md:h-24 object-contain" />
+          </div>
+          <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-black flex items-center justify-center overflow-hidden ml-2 md:ml-4">
+            <div className="w-6 h-6 md:w-10 md:h-10 rounded-full bg-white"></div>
           </div>
         </div>
+      </header>
 
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-black"></div>
-      </section>
-
-      {/* Featured Game Section */}
-      <section className="py-16 bg-gray-800">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            Featured Game
-          </h2>
-          <div className="bg-gray-700 rounded-xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-purple-400 mb-4">TV Show Match</h3>
-            <p className="text-gray-300 mb-6">
-              Test your knowledge of TV shows in this engaging matching game. Pair shows with their genres and compete for the highest score!
-            </p>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-gray-600 rounded-lg p-4">
-                <div className="text-4xl mb-4">🎯</div>
-                <h4 className="text-lg font-semibold text-white mb-2">Match & Score</h4>
-                <p className="text-gray-300 text-sm">
-                  Match shows with their correct genres to earn points
-                </p>
-              </div>
-              <div className="bg-gray-600 rounded-lg p-4">
-                <div className="text-4xl mb-4">⚡</div>
-                <h4 className="text-lg font-semibold text-white mb-2">Time Bonus</h4>
-                <p className="text-gray-300 text-sm">
-                  Faster matches earn you bigger bonuses
-                </p>
-              </div>
-              <div className="bg-gray-600 rounded-lg p-4">
-                <div className="text-4xl mb-4">🏆</div>
-                <h4 className="text-lg font-semibold text-white mb-2">Compete</h4>
-                <p className="text-gray-300 text-sm">
-                  Challenge others on the global leaderboard
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Coming Soon Section */}
-      <section className="py-16 bg-gray-900">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
-            More Games Coming Soon
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">
-                New Game Categories
-              </h3>
-              <p className="text-gray-300">
-                We&apos;re working on exciting new game categories that will test different skills and knowledge areas.
+      {/* Main Content */}
+      <main className="flex-grow py-4 md:py-8 px-3 md:px-6 max-w-5xl mx-auto w-full">
+        <div className="space-y-3 md:space-y-4">
+          {/* Genre Match Game Card */}
+          <div className="bg-pink-100 rounded-2xl md:rounded-3xl p-3 md:p-6 flex items-center justify-between">
+            <div className="flex-1">
+              <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">GENRE MATCH</h2>
+              <p className="text-xs md:text-base text-black mb-3 md:mb-6">
+                Match TV shows and Movies to their correct genres in this fast-paced challenge
               </p>
+              <div className="mt-2 md:mt-4">
+                <Link
+                  href="/game"
+                  className="inline-block bg-pink-500 text-white px-4 md:px-6 py-1 md:py-2 rounded-lg text-sm md:text-base font-semibold hover:bg-pink-600 transition-colors"
+                >
+                  Play Now
+                </Link>
+              </div>
             </div>
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">
-                Multiplayer Modes
-              </h3>
-              <p className="text-gray-300">
-                Challenge your friends directly in upcoming real-time multiplayer games.
+            <div className="ml-2 md:ml-4">
+              <img src="/clapperboard.png" alt="Clapperboard" className="h-20 w-20 md:h-28 md:w-28 object-contain" />
+            </div>
+          </div>
+
+          {/* Broadlinks Game Card */}
+          <div className="bg-purple-100 rounded-2xl md:rounded-3xl p-3 md:p-6 flex items-center justify-between">
+            <div className="flex-1">
+              <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">BROADLINKS</h2>
+              <p className="text-xs md:text-base text-black mb-3 md:mb-6">
+                Group Broadway shows into categories and find the connections in this theatrical puzzle
               </p>
+              <div className="mt-2 md:mt-4">
+                <button
+                  disabled
+                  className="inline-block bg-gray-400 text-white px-4 md:px-6 py-1 md:py-2 rounded-lg text-sm md:text-base font-semibold cursor-not-allowed"
+                >
+                  Coming Soon
+                </button>
+              </div>
+            </div>
+            <div className="ml-2 md:ml-4">
+              <img src="/broadway.png" alt="Broadway" className="h-20 w-20 md:h-28 md:w-28 object-contain" />
+            </div>
+          </div>
+
+          {/* Cinema Chain Game Card */}
+          <div className="bg-yellow-100 rounded-2xl md:rounded-3xl p-3 md:p-6 flex items-center justify-between">
+            <div className="flex-1">
+              <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">CINEMA CHAIN or<br />HOLLYWOOD LINK</h2>
+              <p className="text-xs md:text-base text-black mb-3 md:mb-6">
+                Connect the first actor to the last in the fewest steps by linking them through shared movies and co-stars.
+              </p>
+              <div className="mt-2 md:mt-4">
+                <button
+                  disabled
+                  className="inline-block bg-gray-400 text-white px-4 md:px-6 py-1 md:py-2 rounded-lg text-sm md:text-base font-semibold cursor-not-allowed"
+                >
+                  Coming Soon
+                </button>
+              </div>
+            </div>
+            <div className="ml-2 md:ml-4">
+              <img src="/popcorn.png" alt="Popcorn" className="h-20 w-20 md:h-28 md:w-28 object-contain" />
+            </div>
+          </div>
+
+          {/* Reverse Crossword Game Card */}
+          <div className="bg-green-100 rounded-2xl md:rounded-3xl p-3 md:p-6 flex items-center justify-between">
+            <div className="flex-1">
+              <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">REVERSE<br />CROSSWORD</h2>
+              <p className="text-xs md:text-base text-black mb-3 md:mb-6">
+                The answers are already in place, so it's up to you to come up with the clues
+              </p>
+              <div className="mt-2 md:mt-4">
+                <button
+                  disabled
+                  className="inline-block bg-gray-400 text-white px-4 md:px-6 py-1 md:py-2 rounded-lg text-sm md:text-base font-semibold cursor-not-allowed"
+                >
+                  Coming Soon
+                </button>
+              </div>
+            </div>
+            <div className="ml-2 md:ml-4">
+              <img src="/crossword.png" alt="Crossword" className="h-12 w-12 md:h-20 md:w-20 object-contain" />
             </div>
           </div>
         </div>
-      </section>
-    </Layout>
+      </main>
+    </div>
   );
 }
