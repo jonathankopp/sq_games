@@ -33,8 +33,8 @@ export function ShowCard({
       } : {}}
       onClick={disabled ? undefined : onSelect}
       className={cn(
-        'aspect-[3/1] rounded-full border-2 border-black',
-        'bg-white flex items-center justify-center p-4',
+        'h-14 rounded-full border-2 border-black',
+        'bg-white flex items-center justify-center px-4',
         'cursor-pointer transition-all duration-200',
         isMatched && isCorrect && 'bg-green-100 border-green-500',
         isSelected && !isMatched && 'bg-blue-100 border-blue-500',
@@ -43,7 +43,7 @@ export function ShowCard({
       )}
     >
       <p className={cn(
-        'font-bold text-sm md:text-xl text-center text-black',
+        'font-bold text-xs text-center text-black',
         isMatched && isCorrect && 'text-green-700',
         isSelected && !isMatched && 'text-blue-700',
       )}>

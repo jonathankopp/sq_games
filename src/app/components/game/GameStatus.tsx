@@ -16,46 +16,40 @@ export function GameStatus() {
   };
 
   return (
-    <div className="bg-blue-100 w-full">
+    <div className="bg-blue-100 w-full py-3">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Back button */}
-        <div className="py-2">
-          <Link href="/" className="inline-flex items-center text-black hover:text-gray-700">
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            <span className="text-sm font-medium">Back to Games</span>
+        {/* Single line header with back button and stats */}
+        <div className="flex items-center">
+          {/* Back button - just the arrow */}
+          <Link href="/" className="text-black hover:text-gray-700 mr-4">
+            <ArrowLeft className="h-5 w-5" />
           </Link>
-        </div>
-
-        {/* Stats grid */}
-        <div className="grid grid-cols-3 gap-4 text-center py-6">
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl md:text-2xl font-bold text-black mb-1">TIME</h3>
-            <p className="text-2xl md:text-4xl font-bold text-black">
-              {formatTime(timeElapsed)}
-            </p>
-          </div>
           
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl md:text-2xl font-bold text-black mb-1">ERRORS</h3>
-            <p className="text-2xl md:text-4xl font-bold text-black">
-              {incorrectMatches}
-            </p>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <h3 className="text-xl md:text-2xl font-bold text-black mb-1">SCORE</h3>
-            <p className="text-2xl md:text-4xl font-bold text-black">
-              {formatScore(score)}
-            </p>
+          {/* Stats in one row */}
+          <div className="flex-1 grid grid-cols-3 gap-4 text-center">
+            <div>
+              <span className="text-xs font-bold text-black block">TIME</span>
+              <span className="text-sm font-bold text-black block">{formatTime(timeElapsed)}</span>
+            </div>
+            
+            <div>
+              <span className="text-xs font-bold text-black block">ERRORS</span>
+              <span className="text-sm font-bold text-black block">{incorrectMatches}</span>
+            </div>
+            
+            <div>
+              <span className="text-xs font-bold text-black block">SCORE</span>
+              <span className="text-sm font-bold text-black block">{formatScore(score)}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {isGameComplete && (
-        <div className="text-center pb-4">
+        <div className="text-center mt-2">
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 font-bold"
+            className="bg-black text-white px-4 py-1 rounded-md hover:bg-gray-800 font-bold text-xs"
           >
             Play Again
           </button>

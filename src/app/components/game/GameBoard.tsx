@@ -126,8 +126,8 @@ export function GameBoard({ shows }: GameBoardProps) {
   return (
     <div className="w-full flex flex-col space-y-8">
       {/* TV Shows Section */}
-      <div className="space-y-4">
-        <h2 className="text-lg md:text-xl font-bold text-center text-black">
+      <div className="space-y-3">
+        <h2 className="text-sm font-bold text-center text-black">
           TV SHOWS & MOVIES
         </h2>
         <div className="grid grid-cols-2 gap-4">
@@ -148,8 +148,8 @@ export function GameBoard({ shows }: GameBoardProps) {
       </div>
 
       {/* Genres Section */}
-      <div className="space-y-4">
-        <h2 className="text-lg md:text-xl font-bold text-center text-black">
+      <div className="space-y-3">
+        <h2 className="text-sm font-bold text-center text-black">
           GENRES
         </h2>
         <div className="grid grid-cols-2 gap-4">
