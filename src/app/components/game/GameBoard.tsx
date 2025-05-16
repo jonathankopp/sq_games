@@ -30,6 +30,7 @@ export function GameBoard({ shows }: GameBoardProps) {
   const [selectedShowId, setSelectedShowId] = useState<string | null>(null);
   const [selectedDescriptionId, setSelectedDescriptionId] = useState<string | null>(null);
   const [incorrectShowId, setIncorrectShowId] = useState<string | null>(null);
+  const [incorrectDescriptionId, setIncorrectDescriptionId] = useState<string | null>(null);
   const [shuffledDescriptions, setShuffledDescriptions] = useState<Array<{ id: string; description: string }>>([]);
 
   // Timer effect
@@ -65,7 +66,7 @@ export function GameBoard({ shows }: GameBoardProps) {
 
   const handleShowSelect = (showId: string) => {
     if (correctMatches.has(showId)) return; // Ignore if already matched
-    if (incorrectShowId) return; // Ignore if showing incorrect animation
+    if (incorrectShowId || incorrectDescriptionId) return; // Ignore if showing incorrect animation
     
     setSelectedShowId(showId === selectedShowId ? null : showId);
     if (selectedDescriptionId) {
@@ -75,7 +76,7 @@ export function GameBoard({ shows }: GameBoardProps) {
 
   const handleDescriptionSelect = (descriptionId: string) => {
     if (correctMatches.has(descriptionId)) return; // Ignore if already matched
-    if (incorrectShowId) return; // Ignore if showing incorrect animation
+    if (incorrectShowId || incorrectDescriptionId) return; // Ignore if showing incorrect animation
     
     setSelectedDescriptionId(descriptionId === selectedDescriptionId ? null : descriptionId);
     if (selectedShowId) {
@@ -105,8 +106,9 @@ export function GameBoard({ shows }: GameBoardProps) {
         completeGame();
       }
     } else {
-      // Show incorrect animation only for the show card
+      // Show incorrect animation for both cards
       setIncorrectShowId(showId);
+      setIncorrectDescriptionId(descriptionId);
       
       // Apply score penalty (20% of current score or minimum of 100 points)
       const penalty = Math.max(Math.floor(score * 0.2), 100);
@@ -118,6 +120,7 @@ export function GameBoard({ shows }: GameBoardProps) {
       // Clear after animation
       setTimeout(() => {
         setIncorrectShowId(null);
+        setIncorrectDescriptionId(null);
         clearSelections();
       }, 1000);
     }
@@ -161,6 +164,7 @@ export function GameBoard({ shows }: GameBoardProps) {
               isMatched={correctMatches.has(desc.id)}
               isCorrect={correctMatches.has(desc.id)}
               isSelected={selectedDescriptionId === desc.id}
+              showShakeAnimation={incorrectDescriptionId === desc.id}
               onSelect={() => handleDescriptionSelect(desc.id)}
               disabled={correctMatches.has(desc.id)}
             />

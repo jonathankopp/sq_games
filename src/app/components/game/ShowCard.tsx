@@ -38,6 +38,7 @@ export function ShowCard({
         'cursor-pointer transition-all duration-200',
         isMatched && isCorrect && 'bg-green-100 border-green-500',
         isSelected && !isMatched && 'bg-blue-100 border-blue-500',
+        showShakeAnimation && 'border-red-500',
         disabled && 'opacity-50 cursor-not-allowed',
         className
       )}
@@ -46,6 +47,7 @@ export function ShowCard({
         'font-bold text-xs text-center text-black',
         isMatched && isCorrect && 'text-green-700',
         isSelected && !isMatched && 'text-blue-700',
+        showShakeAnimation && 'text-red-500',
       )}>
         {!isMatched ? title : 'MATCHED'}
       </p>

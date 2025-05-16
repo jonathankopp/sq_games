@@ -1,26 +1,23 @@
 import Link from 'next/link';
-import { CountdownTimer } from './components/CountdownTimer';
 
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-white text-black">
-      {/* Header Bar with Countdown and Logo */}
-      <header className="bg-blue-100 py-2 md:py-4 px-3 md:px-6 flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="font-bold text-sm md:text-2xl mr-2 md:mr-4 text-black">
-            Games Refresh in:
-          </div>
-          <CountdownTimer targetHour={0} targetMinute={0} targetTimezone="America/New_York" />
-        </div>         
+      {/* Header Bar with Logo and Profile */}
+      <header className="bg-blue-100 py-4 md:py-6 px-3 md:px-6 flex items-center justify-between relative">
+        {/* Company Logo */}
+        <div className="font-bold text-lg md:text-2xl text-black">
+          <img src="/squamp-games.png" alt="Squamp Games" className="h-12 md:h-20 object-contain" />
+        </div>
+        
+        {/* Center cat image */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <img src="/cat-martini.png" alt="Cat with martini" className="h-20 md:h-32 object-contain" />
+        </div>
 
-        {/* Right side with cat and profile */}
+        {/* Right side with profile */}
         <div className="flex items-center">
-          <div className="relative">
-            <img src="/cat-martini.png" alt="Cat with martini" className="h-12 md:h-24 object-contain" />
-          </div>
-          <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-black flex items-center justify-center overflow-hidden ml-2 md:ml-4">
-            <div className="w-6 h-6 md:w-10 md:h-10 rounded-full bg-white"></div>
-          </div>
+          <img src="/profile_icon.png" alt="Profile" className="w-11 h-11 md:w-12 md:h-12 rounded-full object-cover" />
         </div>
       </header>
 
