@@ -69,7 +69,7 @@ export default function HomePage() {
           {/* Cinema Chain Game Card */}
           <div className="bg-yellow-100 rounded-2xl md:rounded-3xl p-3 md:p-6 flex items-center justify-between">
             <div className="flex-1">
-              <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">CINEMA CHAIN or<br />HOLLYWOOD LINK</h2>
+              <h2 className="text-xl md:text-3xl font-bold mb-1 md:mb-2 text-black">HOLLYWOOD LINK<br /></h2>
               <p className="text-xs md:text-base text-black mb-3 md:mb-6">
                 Connect the first actor to the last in the fewest steps by linking them through shared movies and co-stars.
               </p>

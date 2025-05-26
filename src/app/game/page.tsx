@@ -23,7 +23,11 @@ export default function GamePage() {
     const fetchShows = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('https://sq-games-backend.onrender.com/api/games/tv-match/shows');
+        
+        // Get API URL from environment variable, with fallback
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://sq-games-backend.onrender.com';
+        console.log('apiUrl', apiUrl);
+        const response = await fetch(`${apiUrl}/api/games/tv-match/shows`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch shows');
